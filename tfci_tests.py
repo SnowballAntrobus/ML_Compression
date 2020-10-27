@@ -6,7 +6,7 @@ import pandas as pd
 import time
 import os
 
-models = ['hific-lo', 'hific-mi', 'hific-hi', 'mbt2018-mean-mse-1', 'mbt2018-mean-mse-2', 'mbt2018-mean-mse-3', 'mbt2018-mean-mse-4', 'mbt2018-mean-mse-5', 'mbt2018-mean-mse-6', 'mbt2018-mean-mse-7', 'mbt2018-mean-mse-8', 'mbt2018-mean-msssim-1', 'mbt2018-mean-msssim-2', 'mbt2018-mean-msssim-3', 'mbt2018-mean-msssim-4', 'mbt2018-mean-msssim-5', 'mbt2018-mean-msssim-6', 'mbt2018-mean-msssim-7', 'mbt2018-mean-msssim-8', 'bmshj2018-factorized-mse-1', 'bmshj2018-factorized-mse-2', 'bmshj2018-factorized-mse-3', 'bmshj2018-factorized-mse-4', 'bmshj2018-factorized-mse-5', 'bmshj2018-factorized-mse-6', 'bmshj2018-factorized-mse-7', 'bmshj2018-factorized-mse-8', 'bmshj2018-factorized-msssim-1', 'bmshj2018-factorized-msssim-2', 'bmshj2018-factorized-msssim-3', 'bmshj2018-factorized-msssim-4', 'bmshj2018-factorized-msssim-5', 'bmshj2018-factorized-msssim-6', 'bmshj2018-factorized-msssim-7', 'bmshj2018-factorized-msssim-8', 'bmshj2018-hyperprior-mse-1', 'bmshj2018-hyperprior-mse-2', 'bmshj2018-hyperprior-mse-3', 'bmshj2018-hyperprior-mse-4', 'bmshj2018-hyperprior-mse-5', 'bmshj2018-hyperprior-mse-6', 'bmshj2018-hyperprior-mse-7', 'bmshj2018-hyperprior-mse-8', 'bmshj2018-hyperprior-msssim-1', 'bmshj2018-hyperprior-msssim-2', 'bmshj2018-hyperprior-msssim-3', 'bmshj2018-hyperprior-msssim-4', 'bmshj2018-hyperprior-msssim-5', 'bmshj2018-hyperprior-msssim-6', 'bmshj2018-hyperprior-msssim-7', 'bmshj2018-hyperprior-msssim-8', 'b2018-leaky_relu-128-1', 'b2018-leaky_relu-128-2', 'b2018-leaky_relu-128-3', 'b2018-leaky_relu-128-4', 'b2018-leaky_relu-192-1', 'b2018-leaky_relu-192-2', 'b2018-leaky_relu-192-3', 'b2018-leaky_relu-192-4', 'b2018-gdn-128-1', 'b2018-gdn-128-2', 'b2018-gdn-128-3', 'b2018-gdn-128-4', 'b2018-gdn-192-1', 'b2018-gdn-192-2', 'b2018-gdn-192-3', 'b2018-gdn-192-4']
+models = ['hific-lo', 'hific-mi', 'hific-hi', 'mbt2018-mean-mse-1', 'mbt2018-mean-mse-2', 'mbt2018-mean-mse-3', 'mbt2018-mean-mse-4', 'mbt2018-mean-mse-5', 'mbt2018-mean-mse-6', 'mbt2018-mean-mse-7', 'mbt2018-mean-mse-8', 'mbt2018-mean-msssim-1', 'mbt2018-mean-msssim-2', 'mbt2018-mean-msssim-3', 'mbt2018-mean-msssim-4', 'mbt2018-mean-msssim-5', 'mbt2018-mean-msssim-6', 'mbt2018-mean-msssim-7', 'mbt2018-mean-msssim-8']
 
 imo = Image.open('images/ori.png')
 width, height = imo.size
@@ -35,6 +35,10 @@ for i in reversed(sizes['16:9']):
         c = 'N'
         d = 'N'
         file_size = 0
+        t0 = 0
+        t1 = 0
+        t2 = 0
+        t3 = 0
         cpath = "compressed/" + model + '_' + str(i[1]) + '.tfci'
         dpath = "decompressed/" + model + '_' + str(i[1]) + '.png'
         tfci.compress(model, impath, cpath)
@@ -51,6 +55,8 @@ for i in reversed(sizes['16:9']):
             tfci.decompress(cpath, dpath)
             t3 = time.time()
             d = 'Y'
+            os.remove(cpath)
+            os.remove(dpath)
         except:
             print(':(')
         df1 = pd.DataFrame([[s, m, c, t1-t0, file_size, d, t3-t2]], columns=columns)
